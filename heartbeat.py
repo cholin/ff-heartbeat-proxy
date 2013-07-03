@@ -42,7 +42,7 @@ for k in form.keys():
     elif k == 'lat':
         data['latitude']  = float(value)
     elif k == 'lon':
-        data['latitude']  = float(value)
+        data['longitude']  = float(value)
     elif k == 'neighbors':
         data['links'] = float(value)
     elif k == 'clients':
