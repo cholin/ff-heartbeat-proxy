@@ -14,7 +14,7 @@ import os
 MAP_URL = 'http://openwifimap.net/map.html'
 API_URLS = ['http://api.openwifimap.net/']
 SERVERS = [('openwifimap.net','openwifimap')]
-LOG_FILE = os.path.join('logs', 'mapconvert.log')
+LOG_FILE = os.path.join('logs', 'hearbeat.log')
 
 # enable debugging
 cgitb.enable()
