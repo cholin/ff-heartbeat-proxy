@@ -43,8 +43,8 @@ for k in form.keys():
         data['latitude']  = float(value)
     elif k == 'lon':
         data['longitude']  = float(value)
-    elif k == 'neighbors':
-        data['links'] = float(value)
+    #elif k == 'neighbors': owm needs for each neighbour a dict
+    #    data['links'] = float(value)
     elif k == 'clients':
         data['clients'] = float(value)
 
@@ -57,15 +57,22 @@ if all(k in data for k in ['hostname', 'longitude', 'latitude']):
     for api_url in API_URLS:
         # only update if present doc was also sent by freifunk-map-proxy
         try:
-            oldreq = urllib2.urlopen(api_url+'/db/'+data['hostname'])
+            url = '%s/db/%s' % (api_url, data['hostname'])
+            oldreq = urllib2.urlopen("%s.olsr" % url)
+            if oldreq.getcode()==200: # already using up-to-date update script
+                continue
+
+            oldreq = urllib2.urlopen(url)
             if oldreq.getcode()==200:
                 olddata = json.loads(oldreq.read())
                 if olddata['script'] != data['script']:
                     continue
+
         except urllib2.HTTPError:
             pass
 
-        req = urllib2.urlopen(api_url+'/update_node/'+data['hostname'], json.dumps(data))
+        url = "%s/update_node/%s" % (api_url, data['hostname'])
+        req = urllib2.urlopen(url, json.dumps(data))
         if req.getcode()==201:
             saved_to.append(api_url)
 
