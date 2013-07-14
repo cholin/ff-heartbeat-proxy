@@ -38,7 +38,10 @@ for k in form.keys():
     escaped = cgi.escape(value)
 
     if k == 'name':
-        data['hostname'] = escaped
+        if escaped.endswith(".olsr"):
+            data['hostname'] = escaped
+        else:
+            data['hostname'] = "%s.olsr" % escaped
     elif k == 'lat':
         data['latitude']  = float(value)
     elif k == 'lon':
@@ -58,7 +61,7 @@ if all(k in data for k in ['hostname', 'longitude', 'latitude']):
         # only update if present doc was also sent by freifunk-map-proxy
         try:
             url = '%s/db/%s' % (api_url, data['hostname'])
-            oldreq = urllib2.urlopen("%s.olsr" % url)
+            oldreq = urllib2.urlopen(url)
             if oldreq.getcode()==200: # already using up-to-date update script
                 continue
 
