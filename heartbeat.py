@@ -14,7 +14,7 @@ import os
 MAP_URL = 'http://openwifimap.net/map.html'
 API_URLS = ['http://api.openwifimap.net/']
 SERVERS = [('openwifimap.net','openwifimap')]
-LOG_FILE = os.path.join('logs', 'hearbeat.log')
+LOG_FILE = os.path.join('logs', 'heartbeat.log')
 
 # enable debugging
 cgitb.enable()
@@ -61,10 +61,6 @@ if all(k in data for k in ['hostname', 'longitude', 'latitude']):
         # only update if present doc was also sent by freifunk-map-proxy
         try:
             url = '%s/db/%s' % (api_url, data['hostname'])
-            oldreq = urllib2.urlopen(url)
-            if oldreq.getcode()==200: # already using up-to-date update script
-                continue
-
             oldreq = urllib2.urlopen(url)
             if oldreq.getcode()==200:
                 olddata = json.loads(oldreq.read())
